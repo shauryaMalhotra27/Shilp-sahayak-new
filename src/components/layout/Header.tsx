@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ShoppingBag } from 'lucide-react';
+import { Menu, X, ShoppingBag, User } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { TrustBadge } from '../shared/TrustBadge';
+import { CartIcon } from '../cart/CartIcon';
+import { useAuth } from '../../hooks/useAuth';
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { isAuthenticated, user } = useAuth();
   const navigation = [
   {
     name: 'Home',
     href: '/'
   },
   {
-    name: 'Product',
-    href: '/product'
+    name: 'Products',
+    href: '/products'
   },
   {
     name: 'Vision',
@@ -28,7 +31,10 @@ export function Header() {
     href: '/support'
   }];
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => {
+    if (path === '/') return location.pathname === '/';
+    return location.pathname.startsWith(path);
+  };
   return (
     <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -63,24 +69,28 @@ export function Header() {
 
           {/* Actions */}
           <div className="hidden md:flex items-center gap-4">
-            <Link to="/shop">
-              <Button
-                variant="ghost"
-                size="sm"
-                leftIcon={<ShoppingBag className="w-4 h-4" />}>
+            <CartIcon />
 
-                Shop
-              </Button>
-            </Link>
-            <Link to="/product">
-              <Button variant="primary" size="sm">
-                Pre-order Micro Bot
-              </Button>
-            </Link>
+            {isAuthenticated ?
+            <Link
+              to="/account"
+              className="text-sm font-medium text-slate-600 hover:text-slate-900 flex items-center gap-2">
+
+                <User className="w-4 h-4" />
+                {user?.name.split(' ')[0]}
+              </Link> :
+
+            <Link to="/login">
+                <Button variant="ghost" size="sm">
+                  Sign In
+                </Button>
+              </Link>
+            }
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center gap-4">
+            <CartIcon />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-slate-600 hover:text-slate-900 p-2">
@@ -110,16 +120,19 @@ export function Header() {
               </Link>
           )}
             <div className="pt-4 flex flex-col gap-3">
-              <Link to="/shop" onClick={() => setIsMenuOpen(false)}>
-                <Button variant="outline" className="w-full">
-                  Shop All
-                </Button>
-              </Link>
-              <Link to="/product" onClick={() => setIsMenuOpen(false)}>
-                <Button variant="primary" className="w-full">
-                  Pre-order Micro Bot
-                </Button>
-              </Link>
+              {isAuthenticated ?
+            <Link to="/account" onClick={() => setIsMenuOpen(false)}>
+                  <Button variant="outline" className="w-full">
+                    My Account
+                  </Button>
+                </Link> :
+
+            <Link to="/login" onClick={() => setIsMenuOpen(false)}>
+                  <Button variant="primary" className="w-full">
+                    Sign In
+                  </Button>
+                </Link>
+            }
             </div>
           </div>
         </div>
