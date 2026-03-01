@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:turbo": "next dev",
-    "build": "next build",
+    "build": "next build && npx @cloudflare/next-on-pages",
     "start": "next start",
     "test:smoke": "next build --webpack",
     "perf:check": "echo \"Use docs/PHASE6_PERFORMANCE_CHECKLIST.md\"",
@@ -20,7 +20,9 @@
     "db:studio": "drizzle-kit studio",
     "cf:pages:build": "npx @cloudflare/next-on-pages",
     "cf:pages:deploy": "wrangler pages deploy .vercel/output/static --project-name shilp-sahayak-nextjs",
-    "cf:pages:deploy:prod": "wrangler pages deploy .vercel/output/static --project-name shilp-sahayak-nextjs --branch main"
+    "cf:pages:deploy:prod": "wrangler pages deploy .vercel/output/static --project-name shilp-sahayak-nextjs --branch main",
+    "pages:build": "npx @cloudflare/next-on-pages",
+  "pages:preview": "npx @cloudflare/next-on-pages --preview"
   },
   "dependencies": {
     "clsx": "^2.1.1",
