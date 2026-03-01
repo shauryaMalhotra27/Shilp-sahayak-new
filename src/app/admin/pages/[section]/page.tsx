@@ -2,6 +2,8 @@ interface AdminPageEditorProps {
   params: Promise<{ section: string }>;
 }
 
+export const runtime = 'edge';
+
 function formatSection(section: string) {
   return section
     .split('-')
@@ -27,4 +29,3 @@ export default async function AdminPageEditor({ params }: AdminPageEditorProps) 
     </div>
   );
 }
-
