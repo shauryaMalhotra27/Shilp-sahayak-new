@@ -1,1 +1,0 @@
-self.__REACT_LOADABLE_MANIFEST="{\"components/layout/AppShell.tsx -> ./AnimatedCursorLayer\":{\"id\":\"components/layout/AppShell.tsx -> ./AnimatedCursorLayer\",\"files\":[\"static/chunks/_app-pages-browser_src_components_layout_AnimatedCursorLayer_tsx.js\"]}}"
