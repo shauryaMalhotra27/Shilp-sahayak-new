@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 export function ProductGallery() {
   const [activeImage, setActiveImage] = useState(0);
@@ -6,32 +6,36 @@ export function ProductGallery() {
   const images = [
   {
     id: 1,
-    color: 'bg-slate-900',
-    accent: 'cyan',
+    color: 'bg-foreground',
+    accentBg: 'bg-info/20',
+    accentDot: 'bg-info',
     label: 'Front View'
   },
   {
     id: 2,
-    color: 'bg-slate-800',
-    accent: 'teal',
+    color: 'bg-foreground/90',
+    accentBg: 'bg-primary/20',
+    accentDot: 'bg-primary',
     label: 'Side Profile'
   },
   {
     id: 3,
-    color: 'bg-slate-900',
-    accent: 'blue',
+    color: 'bg-foreground',
+    accentBg: 'bg-accent/20',
+    accentDot: 'bg-accent',
     label: 'In Use'
   },
   {
     id: 4,
-    color: 'bg-slate-800',
-    accent: 'indigo',
+    color: 'bg-foreground/90',
+    accentBg: 'bg-warning/20',
+    accentDot: 'bg-warning',
     label: 'Packaging'
   }];
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="relative aspect-square w-full bg-slate-100 rounded-2xl overflow-hidden border border-slate-200">
+      <div className="relative aspect-square w-full bg-muted rounded-2xl overflow-hidden border border-border">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeImage}
@@ -56,16 +60,16 @@ export function ProductGallery() {
               <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none" />
 
               {/* Bot Face Simulation */}
-              <div className="w-1/2 h-1/2 bg-black rounded-lg relative flex items-center justify-center overflow-hidden border-4 border-slate-700">
+              <div className="w-1/2 h-1/2 bg-foreground rounded-lg relative flex items-center justify-center overflow-hidden border-4 border-foreground/70">
                 <div
-                  className={`w-16 h-16 rounded-full bg-${images[activeImage].accent}-500/20 blur-xl absolute`} />
+                  className={`w-16 h-16 rounded-full ${images[activeImage].accentBg} blur-xl absolute`} />
 
                 <div className="flex gap-4">
                   <div
-                    className={`w-8 h-3 bg-${images[activeImage].accent}-400 rounded-full shadow-[0_0_10px_currentColor]`} />
+                    className={`w-8 h-3 ${images[activeImage].accentDot} rounded-full shadow-[0_0_10px_currentColor]`} />
 
                   <div
-                    className={`w-8 h-3 bg-${images[activeImage].accent}-400 rounded-full shadow-[0_0_10px_currentColor]`} />
+                    className={`w-8 h-3 ${images[activeImage].accentDot} rounded-full shadow-[0_0_10px_currentColor]`} />
 
                 </div>
               </div>
@@ -83,12 +87,12 @@ export function ProductGallery() {
         <button
           key={img.id}
           onClick={() => setActiveImage(idx)}
-          className={`aspect-square rounded-lg border-2 transition-all overflow-hidden ${activeImage === idx ? 'border-teal-600 ring-2 ring-teal-100' : 'border-transparent hover:border-slate-300'}`}>
+          className={`aspect-square rounded-lg border-2 transition-all overflow-hidden ${activeImage === idx ? 'border-primary ring-2 ring-primary/20' : 'border-transparent hover:border-border'}`}>
 
             <div
             className={`w-full h-full ${img.color} flex items-center justify-center`}>
 
-              <div className={`w-4 h-4 rounded-full bg-${img.accent}-500`} />
+              <div className={`w-4 h-4 rounded-full ${img.accentDot}`} />
             </div>
           </button>
         )}

@@ -4,17 +4,26 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "npx vite",
-    "build": "npx vite build",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "preview": "npx vite preview"
+    "dev": "next dev",
+    "dev:turbo": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test:smoke": "next build --webpack",
+    "perf:check": "echo \"Use docs/PHASE6_PERFORMANCE_CHECKLIST.md\"",
+    "dev:vite": "vite",
+    "build:vite": "vite build",
+    "preview:vite": "vite preview",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.5.4",
+    "lucide-react": "0.452.0",
+    "next": "^16.1.6",
     "react": "^18.3.1",
+    "react-animated-cursor": "^2.11.2",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.2",
-    "lucide-react": "0.522.0",
-    "framer-motion": "^11.5.4"
+    "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.18",
@@ -23,13 +32,13 @@
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
     "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "latest",
     "eslint": "^8.50.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.1",
-    "typescript": "^5.5.4",
-    "vite": "^5.2.0",
+    "postcss": "latest",
     "tailwindcss": "3.4.17",
-    "autoprefixer": "latest",
-    "postcss": "latest"
+    "typescript": "^5.5.4",
+    "vite": "^5.2.0"
   }
 }

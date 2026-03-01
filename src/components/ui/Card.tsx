@@ -1,4 +1,3 @@
-import React from 'react';
 interface CardProps {
   children: React.ReactNode;
   className?: string;
@@ -11,7 +10,7 @@ export function Card({
 }: CardProps) {
   return (
     <div
-      className={`bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden ${className}`}>
+      className={`bg-card text-card-foreground rounded-xl border border-border shadow-sm overflow-hidden ${className}`}>
 
       <div className={noPadding ? '' : 'p-6'}>{children}</div>
     </div>);

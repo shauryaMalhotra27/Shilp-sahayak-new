@@ -1,4 +1,3 @@
-import React from 'react';
 import { Check } from 'lucide-react';
 interface CheckoutStepsProps {
   currentStep: number;
@@ -25,7 +24,7 @@ export function CheckoutSteps({ currentStep }: CheckoutStepsProps) {
   return (
     <div className="w-full py-4">
       <div className="flex items-center justify-between relative">
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-0.5 bg-slate-100 -z-10" />
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-0.5 bg-muted -z-10" />
 
         {steps.map((step) => {
           const isCompleted = currentStep > step.id;
@@ -33,15 +32,15 @@ export function CheckoutSteps({ currentStep }: CheckoutStepsProps) {
           return (
             <div
               key={step.id}
-              className="flex flex-col items-center gap-2 bg-white px-2">
+              className="flex flex-col items-center gap-2 bg-card px-2">
 
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${isCompleted ? 'bg-teal-500 text-white' : isCurrent ? 'bg-slate-900 text-white ring-4 ring-slate-100' : 'bg-slate-100 text-slate-400'}`}>
+                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${isCompleted ? 'bg-primary text-white' : isCurrent ? 'bg-foreground text-background ring-4 ring-muted' : 'bg-muted text-muted-foreground'}`}>
 
                 {isCompleted ? <Check className="w-4 h-4" /> : step.id}
               </div>
               <span
-                className={`text-xs font-medium ${isCurrent ? 'text-slate-900' : 'text-slate-500'}`}>
+                className={`text-xs font-medium ${isCurrent ? 'text-foreground' : 'text-muted-foreground'}`}>
 
                 {step.name}
               </span>

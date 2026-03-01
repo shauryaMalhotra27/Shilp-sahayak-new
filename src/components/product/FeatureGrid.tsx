@@ -1,4 +1,3 @@
-import React from 'react';
 import { Mic, Battery, Smile, Hand, Zap, Moon } from 'lucide-react';
 const features = [
 {
@@ -38,13 +37,13 @@ export function FeatureGrid() {
       {features.map((feature, i) =>
       <div
         key={i}
-        className="bg-slate-50 p-6 rounded-xl border border-slate-100 hover:border-teal-100 hover:bg-teal-50/30 transition-colors">
+        className="bg-muted p-6 rounded-xl border border-border hover:border-primary/20 hover:bg-primary/10/30 transition-colors">
 
-          <div className="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center mb-4 text-teal-600">
+          <div className="w-10 h-10 bg-card rounded-lg shadow-sm flex items-center justify-center mb-4 text-primary">
             <feature.icon className="w-5 h-5" />
           </div>
-          <h3 className="font-semibold text-slate-900 mb-2">{feature.title}</h3>
-          <p className="text-sm text-slate-600 leading-relaxed">
+          <h3 className="font-semibold text-foreground mb-2">{feature.title}</h3>
+          <p className="text-sm text-muted-foreground leading-relaxed">
             {feature.desc}
           </p>
         </div>

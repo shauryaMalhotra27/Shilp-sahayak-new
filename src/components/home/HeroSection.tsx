@@ -1,12 +1,19 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowRight, WifiOff } from 'lucide-react';
+import { ChevronRight, WifiOff } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { TrustBadge } from '../shared/TrustBadge';
-export function HeroSection() {
+import { AdminData } from '../../lib/admin-data';
+
+interface HeroSectionProps {
+  content: AdminData['home']['hero'];
+}
+
+export function HeroSection({ content }: HeroSectionProps) {
   return (
-    <section className="relative overflow-hidden bg-slate-50 pt-16 pb-24 lg:pt-32 lg:pb-40">
+    <section className="relative overflow-hidden bg-muted pt-16 pb-24 lg:pt-32 lg:pb-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           {/* Text Content */}
@@ -25,39 +32,39 @@ export function HeroSection() {
             className="text-center lg:text-left">
 
             <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-6">
-              <TrustBadge type="privacy-first" />
-              <TrustBadge type="offline-only" />
+              {content.trustBadges.map((badge) => (
+                <TrustBadge key={badge} type={badge} />
+              ))}
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 tracking-tight mb-6">
-              Privacy-first electronics. <br />
-              <span className="text-teal-600">Built to work offline.</span>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground tracking-tight mb-6">
+              {content.title} <br />
+              <span className="text-primary">{content.highlightedTitle}</span>
             </h1>
 
-            <p className="text-lg sm:text-xl text-slate-600 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-              Meet Micro Bot — your intelligent, offline desktop companion.
-              Designed for focus and productivity without the surveillance.
+            <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+              {content.subtitle}
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-              <Link to="/product">
+              <Link href={content.primaryCtaHref}>
                 <Button
                   size="lg"
-                  rightIcon={<ArrowRight className="w-4 h-4" />}>
+                  rightIcon={<ChevronRight className="w-4 h-4" />}>
 
-                  View Micro Bot
+                  {content.primaryCtaLabel}
                 </Button>
               </Link>
-              <Link to="/vision">
+              <Link href={content.secondaryCtaHref}>
                 <Button variant="outline" size="lg">
-                  Our Vision
+                  {content.secondaryCtaLabel}
                 </Button>
               </Link>
             </div>
 
-            <p className="mt-6 text-sm text-slate-500 flex items-center justify-center lg:justify-start gap-2">
+            <p className="mt-6 text-sm text-muted-foreground flex items-center justify-center lg:justify-start gap-2">
               <WifiOff className="w-4 h-4" />
-              <span>No Wi-Fi required. No data collection.</span>
+              <span>{content.footnote}</span>
             </p>
           </motion.div>
 
@@ -78,20 +85,20 @@ export function HeroSection() {
             className="relative">
 
             {/* Abstract Background Elements */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-teal-100/50 rounded-full blur-3xl -z-10" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/10 rounded-full blur-3xl -z-10" />
 
             {/* Product Placeholder - In a real app this would be a 3D render or high-res photo */}
-            <div className="relative mx-auto w-72 h-72 sm:w-96 sm:h-96 bg-slate-900 rounded-3xl shadow-2xl flex items-center justify-center border-4 border-slate-800">
+            <div className="relative mx-auto w-72 h-72 sm:w-96 sm:h-96 bg-foreground rounded-3xl shadow-2xl flex items-center justify-center border-4 border-foreground/90">
               {/* Screen Glow Effect */}
-              <div className="absolute inset-4 bg-slate-950 rounded-2xl overflow-hidden flex items-center justify-center">
+              <div className="absolute inset-4 bg-foreground rounded-2xl overflow-hidden flex items-center justify-center">
                 <div className="w-full h-full relative">
                   {/* Breathing LED Effect */}
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-cyan-500/20 rounded-full blur-xl animate-pulse" />
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-info/25 rounded-full blur-xl animate-pulse" />
 
                   {/* Bot Face */}
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-8">
-                    <div className="w-12 h-4 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.8)] animate-blink" />
-                    <div className="w-12 h-4 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.8)] animate-blink" />
+                    <div className="w-12 h-4 bg-info rounded-full shadow-[0_0_15px_rgba(34,211,238,0.8)] animate-blink" />
+                    <div className="w-12 h-4 bg-info rounded-full shadow-[0_0_15px_rgba(34,211,238,0.8)] animate-blink" />
                   </div>
                 </div>
               </div>
@@ -114,13 +121,13 @@ export function HeroSection() {
                 delay: 1,
                 duration: 0.5
               }}
-              className="absolute -bottom-6 -right-6 md:bottom-10 md:right-10 bg-white p-4 rounded-xl shadow-xl border border-slate-100 max-w-[200px]">
+              className="absolute -bottom-6 -right-6 md:bottom-10 md:right-10 bg-card p-4 rounded-xl shadow-xl border border-border max-w-[200px]">
 
-              <p className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1">
-                Made in India
+              <p className="text-xs font-bold text-foreground uppercase tracking-wider mb-1">
+                {content.floatingBadgeTitle}
               </p>
-              <p className="text-xs text-slate-500">
-                Engineered & Assembled in Patiala, Punjab
+              <p className="text-xs text-muted-foreground">
+                {content.floatingBadgeSubtitle}
               </p>
             </motion.div>
           </motion.div>

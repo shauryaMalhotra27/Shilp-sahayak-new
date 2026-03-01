@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 const specs = [
@@ -66,24 +66,24 @@ export function SpecsAccordion() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-bold text-slate-900 mb-6">
+      <h3 className="text-xl font-bold text-foreground mb-6">
         Technical Specifications
       </h3>
 
       {specs.map((section, idx) =>
       <div
         key={idx}
-        className="border border-slate-200 rounded-lg overflow-hidden">
+        className="border border-border rounded-lg overflow-hidden">
 
           <button
           onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
-          className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100 transition-colors text-left">
+          className="w-full flex items-center justify-between p-4 bg-muted hover:bg-muted transition-colors text-left">
 
-            <span className="font-semibold text-slate-900">
+            <span className="font-semibold text-foreground">
               {section.category}
             </span>
             <ChevronDown
-            className={`w-5 h-5 text-slate-500 transition-transform ${openIndex === idx ? 'rotate-180' : ''}`} />
+            className={`w-5 h-5 text-muted-foreground transition-transform ${openIndex === idx ? 'rotate-180' : ''}`} />
 
           </button>
 
@@ -101,11 +101,11 @@ export function SpecsAccordion() {
             }}
             className="overflow-hidden">
 
-                <div className="p-4 bg-white border-t border-slate-200 space-y-3">
+                <div className="p-4 bg-card border-t border-border space-y-3">
                   {section.items.map((item, i) =>
               <div key={i} className="flex justify-between text-sm">
-                      <span className="text-slate-500">{item.label}</span>
-                      <span className="text-slate-900 font-medium">
+                      <span className="text-muted-foreground">{item.label}</span>
+                      <span className="text-foreground font-medium">
                         {item.value}
                       </span>
                     </div>

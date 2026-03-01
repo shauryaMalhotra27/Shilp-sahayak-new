@@ -1,4 +1,6 @@
-import React, { useEffect, useState, createContext, useContext } from 'react';
+'use client';
+
+import { useCallback, useEffect, useMemo, useState, createContext, useContext } from 'react';
 import { User, Address, Order } from '../types/user';
 interface AuthContextType {
   user: User | null;
@@ -14,6 +16,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: {children: React.ReactNode;}) {
   const [user, setUser] = useState<User | null>(() => {
+    if (typeof window === 'undefined') return null;
     const saved = localStorage.getItem('user');
     return saved ? JSON.parse(saved) : null;
   });
@@ -24,7 +27,7 @@ export function AuthProvider({ children }: {children: React.ReactNode;}) {
       localStorage.removeItem('user');
     }
   }, [user]);
-  const login = (email: string) => {
+  const login = useCallback((email: string) => {
     // Mock login - in real app would verify credentials
     // For demo, we'll simulate a user if email matches or create a mock one
     const mockUser: User = {
@@ -37,8 +40,8 @@ export function AuthProvider({ children }: {children: React.ReactNode;}) {
       joinedDate: new Date().toISOString()
     };
     setUser(mockUser);
-  };
-  const signup = (name: string, email: string, phone: string) => {
+  }, []);
+  const signup = useCallback((name: string, email: string, phone: string) => {
     const newUser: User = {
       id: Math.random().toString(36).substr(2, 9),
       name,
@@ -49,9 +52,9 @@ export function AuthProvider({ children }: {children: React.ReactNode;}) {
       joinedDate: new Date().toISOString()
     };
     setUser(newUser);
-  };
-  const logout = () => setUser(null);
-  const updateProfile = (data: Partial<User>) => {
+  }, []);
+  const logout = useCallback(() => setUser(null), []);
+  const updateProfile = useCallback((data: Partial<User>) => {
     setUser((prev) =>
     prev ?
     {
@@ -60,8 +63,8 @@ export function AuthProvider({ children }: {children: React.ReactNode;}) {
     } :
     null
     );
-  };
-  const addAddress = (address: Omit<Address, 'id'>) => {
+  }, []);
+  const addAddress = useCallback((address: Omit<Address, 'id'>) => {
     setUser((prev) => {
       if (!prev) return null;
       const newAddress = {
@@ -73,8 +76,8 @@ export function AuthProvider({ children }: {children: React.ReactNode;}) {
         addresses: [...prev.addresses, newAddress]
       };
     });
-  };
-  const removeAddress = (id: string) => {
+  }, []);
+  const removeAddress = useCallback((id: string) => {
     setUser((prev) => {
       if (!prev) return null;
       return {
@@ -82,8 +85,8 @@ export function AuthProvider({ children }: {children: React.ReactNode;}) {
         addresses: prev.addresses.filter((a) => a.id !== id)
       };
     });
-  };
-  const addOrder = (order: Order) => {
+  }, []);
+  const addOrder = useCallback((order: Order) => {
     setUser((prev) => {
       if (!prev) return null;
       return {
@@ -91,20 +94,33 @@ export function AuthProvider({ children }: {children: React.ReactNode;}) {
         orders: [order, ...prev.orders]
       };
     });
-  };
+  }, []);
+  const contextValue = useMemo(
+    () => ({
+      user,
+      isAuthenticated: !!user,
+      login,
+      logout,
+      signup,
+      updateProfile,
+      addAddress,
+      removeAddress,
+      addOrder
+    }),
+    [
+      user,
+      login,
+      logout,
+      signup,
+      updateProfile,
+      addAddress,
+      removeAddress,
+      addOrder
+    ]
+  );
   return (
     <AuthContext.Provider
-      value={{
-        user,
-        isAuthenticated: !!user,
-        login,
-        logout,
-        signup,
-        updateProfile,
-        addAddress,
-        removeAddress,
-        addOrder
-      }}>
+      value={contextValue}>
 
       {children}
     </AuthContext.Provider>);

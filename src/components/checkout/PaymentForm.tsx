@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from '../ui/Button';
 import { ArrowLeft, CreditCard, Smartphone, Building } from 'lucide-react';
 interface PaymentFormProps {
@@ -10,14 +10,14 @@ export function PaymentForm({ onNext, onBack, total }: PaymentFormProps) {
   const [method, setMethod] = useState('upi');
   return (
     <div className="space-y-6">
-      <div className="bg-white p-6 rounded-xl border border-slate-200">
-        <h2 className="text-lg font-bold text-slate-900 mb-6">
+      <div className="bg-card p-6 rounded-xl border border-border">
+        <h2 className="text-lg font-bold text-foreground mb-6">
           Select Payment Method
         </h2>
 
         <div className="space-y-3">
           <label
-            className={`flex items-center gap-4 p-4 rounded-lg border cursor-pointer transition-all ${method === 'upi' ? 'border-teal-500 bg-teal-50 ring-1 ring-teal-500' : 'border-slate-200 hover:border-slate-300'}`}>
+            className={`flex items-center gap-4 p-4 rounded-lg border cursor-pointer transition-all ${method === 'upi' ? 'border-primary bg-primary/10 ring-1 ring-primary' : 'border-border hover:border-primary/40'}`}>
 
             <input
               type="radio"
@@ -25,21 +25,21 @@ export function PaymentForm({ onNext, onBack, total }: PaymentFormProps) {
               value="upi"
               checked={method === 'upi'}
               onChange={() => setMethod('upi')}
-              className="text-teal-600 focus:ring-teal-500" />
+              className="text-primary focus:ring-primary" />
 
-            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-slate-600 shadow-sm">
+            <div className="w-10 h-10 bg-card rounded-full flex items-center justify-center text-muted-foreground shadow-sm">
               <Smartphone className="w-5 h-5" />
             </div>
             <div>
-              <p className="font-medium text-slate-900">UPI / QR Code</p>
-              <p className="text-sm text-slate-500">
+              <p className="font-medium text-foreground">UPI / QR Code</p>
+              <p className="text-sm text-muted-foreground">
                 Google Pay, PhonePe, Paytm
               </p>
             </div>
           </label>
 
           <label
-            className={`flex items-center gap-4 p-4 rounded-lg border cursor-pointer transition-all ${method === 'card' ? 'border-teal-500 bg-teal-50 ring-1 ring-teal-500' : 'border-slate-200 hover:border-slate-300'}`}>
+            className={`flex items-center gap-4 p-4 rounded-lg border cursor-pointer transition-all ${method === 'card' ? 'border-primary bg-primary/10 ring-1 ring-primary' : 'border-border hover:border-primary/40'}`}>
 
             <input
               type="radio"
@@ -47,19 +47,19 @@ export function PaymentForm({ onNext, onBack, total }: PaymentFormProps) {
               value="card"
               checked={method === 'card'}
               onChange={() => setMethod('card')}
-              className="text-teal-600 focus:ring-teal-500" />
+              className="text-primary focus:ring-primary" />
 
-            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-slate-600 shadow-sm">
+            <div className="w-10 h-10 bg-card rounded-full flex items-center justify-center text-muted-foreground shadow-sm">
               <CreditCard className="w-5 h-5" />
             </div>
             <div>
-              <p className="font-medium text-slate-900">Credit / Debit Card</p>
-              <p className="text-sm text-slate-500">Visa, Mastercard, RuPay</p>
+              <p className="font-medium text-foreground">Credit / Debit Card</p>
+              <p className="text-sm text-muted-foreground">Visa, Mastercard, RuPay</p>
             </div>
           </label>
 
           <label
-            className={`flex items-center gap-4 p-4 rounded-lg border cursor-pointer transition-all ${method === 'netbanking' ? 'border-teal-500 bg-teal-50 ring-1 ring-teal-500' : 'border-slate-200 hover:border-slate-300'}`}>
+            className={`flex items-center gap-4 p-4 rounded-lg border cursor-pointer transition-all ${method === 'netbanking' ? 'border-primary bg-primary/10 ring-1 ring-primary' : 'border-border hover:border-primary/40'}`}>
 
             <input
               type="radio"
@@ -67,27 +67,27 @@ export function PaymentForm({ onNext, onBack, total }: PaymentFormProps) {
               value="netbanking"
               checked={method === 'netbanking'}
               onChange={() => setMethod('netbanking')}
-              className="text-teal-600 focus:ring-teal-500" />
+              className="text-primary focus:ring-primary" />
 
-            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-slate-600 shadow-sm">
+            <div className="w-10 h-10 bg-card rounded-full flex items-center justify-center text-muted-foreground shadow-sm">
               <Building className="w-5 h-5" />
             </div>
             <div>
-              <p className="font-medium text-slate-900">Netbanking</p>
-              <p className="text-sm text-slate-500">All major Indian banks</p>
+              <p className="font-medium text-foreground">Netbanking</p>
+              <p className="text-sm text-muted-foreground">All major Indian banks</p>
             </div>
           </label>
         </div>
       </div>
 
-      <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
+      <div className="bg-muted p-6 rounded-xl border border-border">
         <div className="flex justify-between items-center mb-4">
-          <span className="text-slate-600">Total Amount</span>
-          <span className="text-2xl font-bold text-slate-900">
+          <span className="text-muted-foreground">Total Amount</span>
+          <span className="text-2xl font-bold text-foreground">
             ₹{total.toLocaleString()}
           </span>
         </div>
-        <p className="text-xs text-slate-500 text-center">
+        <p className="text-xs text-muted-foreground text-center">
           By clicking "Pay Now", you agree to our Terms of Service. Your payment
           information is encrypted and secure.
         </p>

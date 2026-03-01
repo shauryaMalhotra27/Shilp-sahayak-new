@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/products/layout,_N_T_/products/micro-bot/layout,_N_T_/products/micro-bot/page,_N_T_/products/micro-bot"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/products/micro-bot/__PAGE__",
+    "/products/micro-bot",
+    "/products",
+    "/_index",
+    "/_head"
+  ]
+}

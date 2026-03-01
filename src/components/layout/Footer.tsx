@@ -1,164 +1,115 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 import { MapPin, Mail, Instagram, Youtube, Twitter } from 'lucide-react';
+import { useAdminData } from '../../hooks/useAdminData';
+
+const socialIconMap: Record<string, JSX.Element> = {
+  instagram: <Instagram className="w-5 h-5" />,
+  youtube: <Youtube className="w-5 h-5" />,
+  twitter: <Twitter className="w-5 h-5" />
+};
+
 export function Footer() {
+  const adminData = useAdminData();
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="bg-slate-900 text-slate-300 pt-16 pb-8">
+    <footer className="bg-foreground text-background/80 pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand Column */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                <span className="text-slate-900 font-bold text-lg">S</span>
+                <span className="text-foreground font-bold text-lg">S</span>
               </div>
-              <span className="font-bold text-xl text-white tracking-tight">
-                Shilp Sahayak
+              <span className="font-bold text-xl text-background tracking-tight">
+                {adminData.footer.brandName}
               </span>
             </div>
-            <p className="text-sm text-slate-400 leading-relaxed">
-              Privacy-first electronics designed for focus and well-being. Built
-              with ethics and engineering excellence in India.
+            <p className="text-sm text-background/60 leading-relaxed">
+              {adminData.footer.brandTagline}
             </p>
             <div className="flex items-center gap-4 pt-2">
-              <a
-                href="#"
-                className="text-slate-400 hover:text-white transition-colors">
-
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="text-slate-400 hover:text-white transition-colors">
-
-                <Youtube className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="text-slate-400 hover:text-white transition-colors">
-
-                <Twitter className="w-5 h-5" />
-              </a>
+              {adminData.footer.socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  className="text-background/60 hover:text-background transition-colors"
+                >
+                  {socialIconMap[social.label.toLowerCase()] ?? social.label}
+                </a>
+              ))}
             </div>
           </div>
 
           {/* Links Column */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Shop</h3>
+            <h3 className="text-background font-semibold mb-4">Shop</h3>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  to="/product"
-                  className="hover:text-teal-400 transition-colors">
-
-                  Micro Bot
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/shop"
-                  className="hover:text-teal-400 transition-colors">
-
-                  All Products
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/support"
-                  className="hover:text-teal-400 transition-colors">
-
-                  Warranty & Returns
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/support"
-                  className="hover:text-teal-400 transition-colors">
-
-                  Shipping Policy
-                </Link>
-              </li>
+              {adminData.footer.shopLinks.map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href} className="hover:text-primary-light transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Company Column */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Company</h3>
+            <h3 className="text-background font-semibold mb-4">Company</h3>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  to="/about"
-                  className="hover:text-teal-400 transition-colors">
-
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/vision"
-                  className="hover:text-teal-400 transition-colors">
-
-                  Our Vision
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/vision"
-                  className="hover:text-teal-400 transition-colors">
-
-                  Privacy Manifesto
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/contact"
-                  className="hover:text-teal-400 transition-colors">
-
-                  Contact
-                </Link>
-              </li>
+              {adminData.footer.companyLinks.map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href} className="hover:text-primary-light transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Contact Column */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Contact</h3>
+            <h3 className="text-background font-semibold mb-4">Contact</h3>
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-teal-500 shrink-0" />
+                <MapPin className="w-5 h-5 text-primary-light shrink-0" />
                 <span>
-                  Shilp Sahayak Labs
-                  <br />
-                  Patiala, Punjab
-                  <br />
-                  India 147001
+                  {adminData.footer.addressLines.map((line) => (
+                    <span key={line}>
+                      {line}
+                      <br />
+                    </span>
+                  ))}
                 </span>
               </li>
               <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-teal-500 shrink-0" />
+                <Mail className="w-5 h-5 text-primary-light shrink-0" />
                 <a
-                  href="mailto:hello@shilpsahayak.in"
-                  className="hover:text-teal-400 transition-colors">
+                  href={`mailto:${adminData.footer.contactEmail}`}
+                  className="hover:text-primary-light transition-colors">
 
-                  hello@shilpsahayak.in
+                  {adminData.footer.contactEmail}
                 </a>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+        <div className="border-t border-background/15 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-background/50">
           <p>
-            &copy; {new Date().getFullYear()} Shilp Sahayak Electronics Pvt Ltd.
-            All rights reserved.
+            &copy; {year} {adminData.footer.copyrightText}
           </p>
           <div className="flex gap-6">
-            <Link to="/vision" className="hover:text-slate-300">
-              Privacy Policy
-            </Link>
-            <Link to="/support" className="hover:text-slate-300">
-              Terms of Service
-            </Link>
+            {adminData.footer.legalLinks.map((link) => (
+              <Link key={link.label} href={link.href} className="hover:text-background/75">
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
       </div>

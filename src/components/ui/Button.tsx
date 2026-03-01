@@ -1,7 +1,11 @@
-import React from 'react';
+'use client';
+
 import { Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+import type { HTMLMotionProps } from 'framer-motion';
+
+interface ButtonProps extends HTMLMotionProps<'button'> {
+  children?: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
@@ -23,13 +27,13 @@ export function Button({
   'inline-flex items-center justify-center rounded-lg font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
   const variants = {
     primary:
-    'bg-slate-900 text-white hover:bg-slate-800 focus:ring-slate-900 shadow-sm hover:-translate-y-0.5',
+    'bg-primary text-white hover:bg-primary-dark focus:ring-primary shadow-sm hover:-translate-y-0.5',
     secondary:
-    'bg-teal-600 text-white hover:bg-teal-700 focus:ring-teal-600 shadow-sm hover:-translate-y-0.5',
+    'bg-accent text-white hover:bg-primary focus:ring-accent shadow-sm hover:-translate-y-0.5',
     outline:
-    'border-2 border-slate-200 bg-transparent text-slate-900 hover:border-slate-900 hover:bg-slate-50 focus:ring-slate-900',
+    'border-2 border-border bg-transparent text-foreground hover:border-primary hover:bg-muted focus:ring-primary',
     ghost:
-    'bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+    'bg-transparent text-muted-foreground hover:bg-muted hover:text-foreground'
   };
   const sizes = {
     sm: 'h-9 px-4 text-sm',
