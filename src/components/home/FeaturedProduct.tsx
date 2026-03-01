@@ -5,9 +5,11 @@ import { AdminData } from '../../lib/admin-data';
 
 interface FeaturedProductProps {
   content: AdminData['home']['featuredProducts'];
+  products?: AdminData['home']['featuredProducts']['products'];
 }
 
-export function FeaturedProduct({ content }: FeaturedProductProps) {
+export function FeaturedProduct({ content, products }: FeaturedProductProps) {
+  const list = products ?? content.products;
   return (
     <section className="bg-muted py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,7 +31,7 @@ export function FeaturedProduct({ content }: FeaturedProductProps) {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {content.products.map((product) =>
+          {list.map((product) =>
           <ProductCard key={product.name} {...product} />
           )}
         </div>

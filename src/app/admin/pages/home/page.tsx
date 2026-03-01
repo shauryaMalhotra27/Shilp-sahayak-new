@@ -99,7 +99,7 @@ export default function AdminHomePageEditor() {
         />
         <div className="space-y-3">
           {home.valueProps.items.map((item, index) => (
-            <div key={`${item.name}-${index}`} className="border border-border rounded-lg p-3 space-y-2">
+            <div key={`home-value-prop-${index}`} className="border border-border rounded-lg p-3 space-y-2">
               <input
                 className="w-full h-10 px-3 rounded-lg border border-border"
                 value={item.name}

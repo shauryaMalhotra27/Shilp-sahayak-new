@@ -1,11 +1,30 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Button } from '../../../components/ui/Button';
 import { useAdminEditor } from '../../../hooks/useAdminEditor';
 import { ProductStatus } from '../../../lib/admin-data';
+import { deleteRemoteProduct, fetchRemoteProducts, syncProductsToRemote } from '../../../lib/admin-api';
 
 export default function AdminProductsPage() {
   const { data, setData, persist, ready, savedAt, isSaving, error } = useAdminEditor({ section: 'products' });
+  const [remoteIds, setRemoteIds] = useState<Array<number | null>>([]);
+  const [remoteSyncError, setRemoteSyncError] = useState('');
+
+  useEffect(() => {
+    let active = true;
+    fetchRemoteProducts().then((rows) => {
+      if (!active || !rows) return;
+      setRemoteIds(rows.map((r) => r.id));
+      setData((prev) => ({
+        ...prev,
+        products: { ...prev.products, catalog: rows.map((r) => r.product) },
+      }));
+    });
+    return () => {
+      active = false;
+    };
+  }, [setData]);
 
   if (!ready) return <p className="text-muted-foreground">Loading editor...</p>;
 
@@ -92,7 +111,7 @@ export default function AdminProductsPage() {
         </div>
         <div className="space-y-4">
           {catalog.map((product, index) => (
-            <div key={`${product.name}-${index}`} className="border border-border rounded-lg p-4 space-y-3">
+            <div key={`product-row-${index}`} className="border border-border rounded-lg p-4 space-y-3">
               <div className="grid sm:grid-cols-2 gap-3">
                 <input
                   className="w-full h-10 px-3 rounded-lg border border-border"
@@ -194,12 +213,23 @@ export default function AdminProductsPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => {
+                onClick={async () => {
+                  const id = remoteIds[index];
+                  if (id) {
+                    const ok = await deleteRemoteProduct(id);
+                    if (!ok) {
+                      setRemoteSyncError('Failed to delete remote product');
+                      return;
+                    }
+                  }
                   const next = catalog.filter((_, i) => i !== index);
+                  const nextIds = remoteIds.filter((_, i) => i !== index);
                   setData({
                     ...data,
                     products: { ...data.products, catalog: next }
                   });
+                  setRemoteIds(nextIds);
+                  setRemoteSyncError('');
                 }}
               >
                 Remove Product
@@ -245,9 +275,25 @@ export default function AdminProductsPage() {
       </section>
 
       <div className="flex items-center gap-3">
-        <Button onClick={() => persist()} isLoading={isSaving}>Save Products Content</Button>
+        <Button
+          onClick={async () => {
+            const localSaved = await persist();
+            if (!localSaved) return;
+            const synced = await syncProductsToRemote(catalog, remoteIds);
+            if (!synced.ok) {
+              setRemoteSyncError(synced.error || 'Remote sync failed');
+              return;
+            }
+            setRemoteIds(synced.ids);
+            setRemoteSyncError('');
+          }}
+          isLoading={isSaving}
+        >
+          Save Products Content
+        </Button>
         {savedAt && <p className="text-sm text-success">Saved at {savedAt}</p>}
         {error && <p className="text-sm text-danger">{error}</p>}
+        {remoteSyncError && <p className="text-sm text-danger">{remoteSyncError}</p>}
       </div>
     </div>
   );

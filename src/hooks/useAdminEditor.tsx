@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AdminData, defaultStaticData, loadAdminData, saveAdminData } from '../lib/admin-data';
 import { AdminSectionKey, firstValidationMessage, validateAdminSection } from '../lib/admin-validation';
 import { useAdminEditorContext } from '../contexts/AdminEditorContext';
+import { fetchRemoteContentSection, sectionDataByKey, upsertRemoteContentSection } from '../lib/admin-api';
 
 interface UseAdminEditorOptions {
   section: AdminSectionKey;
@@ -21,11 +22,27 @@ export function useAdminEditor(options: UseAdminEditorOptions) {
   const { autosave, hasUnsavedChanges, setHasUnsavedChanges } = useAdminEditorContext();
 
   useEffect(() => {
-    const loaded = loadAdminData();
-    setData(loaded);
-    savedSnapshotRef.current = JSON.stringify(loaded);
-    setHasUnsavedChanges(false);
-    setReady(true);
+    let active = true;
+    const hydrate = async () => {
+      const loaded = loadAdminData();
+      const remoteSection = await fetchRemoteContentSection<unknown>(section);
+      if (!active) return;
+      const hydrated =
+        remoteSection
+          ? ({
+              ...loaded,
+              [section]: remoteSection,
+            } as AdminData)
+          : loaded;
+      setData(hydrated);
+      savedSnapshotRef.current = JSON.stringify(hydrated);
+      setHasUnsavedChanges(false);
+      setReady(true);
+    };
+    hydrate();
+    return () => {
+      active = false;
+    };
   }, [setHasUnsavedChanges]);
 
   useEffect(() => {
@@ -39,7 +56,7 @@ export function useAdminEditor(options: UseAdminEditorOptions) {
     setData((prev) => updater(prev));
   };
 
-  const persist = useCallback((
+  const persist = useCallback(async (
     nextData?: AdminData,
     options?: { validate?: (payload: AdminData) => string | null }
   ) => {
@@ -54,6 +71,16 @@ export function useAdminEditor(options: UseAdminEditorOptions) {
     try {
       setIsSaving(true);
       saveAdminData(payload);
+      if (section !== 'products') {
+        const remote = await upsertRemoteContentSection(
+          section,
+          sectionDataByKey(payload, section)
+        );
+        if (!remote.ok) {
+          setError(remote.error || 'Remote sync failed');
+          return false;
+        }
+      }
       savedSnapshotRef.current = JSON.stringify(payload);
       setHasUnsavedChanges(false);
       setSavedAt(new Date().toLocaleTimeString());
@@ -73,7 +100,7 @@ export function useAdminEditor(options: UseAdminEditorOptions) {
         window.clearTimeout(saveTimeoutRef.current);
       }
       saveTimeoutRef.current = window.setTimeout(() => {
-        persist(nextData);
+        void persist(nextData);
         saveTimeoutRef.current = null;
       }, delayMs);
     },

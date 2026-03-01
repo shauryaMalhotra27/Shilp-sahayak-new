@@ -48,7 +48,7 @@ export default function AdminAboutPageEditor() {
       <section className="bg-card border border-border rounded-xl p-5 space-y-3">
         <h2 className="font-semibold text-foreground">Timeline</h2>
         {about.timeline.map((item, index) => (
-          <div key={`${item.event}-${index}`} className="border border-border rounded-lg p-3 space-y-2">
+          <div key={`about-timeline-${index}`} className="border border-border rounded-lg p-3 space-y-2">
             <div className="grid sm:grid-cols-2 gap-2">
               <input
                 className="w-full h-10 px-3 rounded-lg border border-border"
@@ -92,4 +92,3 @@ export default function AdminAboutPageEditor() {
     </div>
   );
 }
-

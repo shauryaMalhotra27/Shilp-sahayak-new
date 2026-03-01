@@ -1,0 +1,18 @@
+name = "shilp-sahayak-api"
+main = "src/worker.ts"
+compatibility_date = "2026-02-01"
+
+# Cloudflare D1 binding
+[[d1_databases]]
+binding = "DB"
+database_name = "shilp_sahayak_db"
+database_id = "7402dfe6-1cfe-4b92-879e-e7f46cfaa78d"
+# For preview/local environments.
+# If you use a separate preview DB, replace this with that DB id.
+preview_database_id = "7402dfe6-1cfe-4b92-879e-e7f46cfaa78d"
+
+[vars]
+# Keep non-sensitive vars only in this block.
+# Set JWT_SECRET via: wrangler secret put JWT_SECRET
+# Optional extra guard for admin write routes:
+# Set via: wrangler secret put ADMIN_API_KEY

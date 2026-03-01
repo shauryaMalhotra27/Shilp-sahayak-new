@@ -8,6 +8,7 @@ import {
   Package,
   Globe,
   Receipt,
+  Activity,
   LogOut
 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
@@ -20,7 +21,8 @@ const navItems = [
   { href: '/admin/pages', label: 'Pages', icon: FileText },
   { href: '/admin/products', label: 'Products', icon: Package },
   { href: '/admin/global', label: 'Global', icon: Globe },
-  { href: '/admin/orders', label: 'Users/Orders', icon: Receipt }
+  { href: '/admin/orders', label: 'Users/Orders', icon: Receipt },
+  { href: '/admin/diagnostics', label: 'Diagnostics', icon: Activity }
 ];
 
 function AdminShell({ children }: { children: React.ReactNode }) {

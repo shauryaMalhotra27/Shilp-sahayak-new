@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss';
-import { theme } from './src/styles/theme';
+import { theme } from './src/styles/theme.ts';
 
 const hsl = (value: string) => `hsl(${value} / <alpha-value>)`;
 

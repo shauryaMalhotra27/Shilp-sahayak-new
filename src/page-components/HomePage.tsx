@@ -5,14 +5,16 @@ import { ValuePropsSection } from '../components/home/ValuePropsSection';
 import { FeaturedProduct } from '../components/home/FeaturedProduct';
 import { NewsletterForm } from '../components/home/NewsletterForm';
 import { useAdminData } from '../hooks/useAdminData';
+import { useWorkerProducts } from '../hooks/useWorkerProducts';
 export function HomePage() {
   const adminData = useAdminData();
+  const { products: liveProducts } = useWorkerProducts(adminData.products.catalog);
 
   return (
     <div className="min-h-screen">
       <HeroSection content={adminData.home.hero} />
       <ValuePropsSection content={adminData.home.valueProps} />
-      <FeaturedProduct content={adminData.home.featuredProducts} />
+      <FeaturedProduct content={adminData.home.featuredProducts} products={liveProducts} />
 
       {/* Newsletter / Community Section */}
       <section className="py-24 bg-card">

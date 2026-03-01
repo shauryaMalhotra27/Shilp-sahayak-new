@@ -10,10 +10,21 @@
     "start": "next start",
     "test:smoke": "next build --webpack",
     "perf:check": "echo \"Use docs/PHASE6_PERFORMANCE_CHECKLIST.md\"",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "cf:login": "wrangler login",
+    "cf:d1:create": "wrangler d1 create shilp_sahayak_db",
+    "cf:d1:migrate:local": "wrangler d1 execute shilp_sahayak_db --local --file=./drizzle/migrations/0000_init.sql",
+    "cf:d1:migrate:remote": "wrangler d1 execute shilp_sahayak_db --remote --file=./drizzle/migrations/0000_init.sql",
+    "cf:d1:check:local": "wrangler d1 execute shilp_sahayak_db --local --command=\"SELECT name FROM sqlite_master WHERE type='table';\"",
+    "db:generate": "drizzle-kit generate",
+    "db:studio": "drizzle-kit studio",
+    "cf:pages:build": "npx @cloudflare/next-on-pages",
+    "cf:pages:deploy": "wrangler pages deploy .vercel/output/static --project-name shilp-sahayak-nextjs",
+    "cf:pages:deploy:prod": "wrangler pages deploy .vercel/output/static --project-name shilp-sahayak-nextjs --branch main"
   },
   "dependencies": {
     "clsx": "^2.1.1",
+    "drizzle-orm": "^0.44.2",
     "framer-motion": "^11.5.4",
     "lucide-react": "0.452.0",
     "next": "^16.1.6",
@@ -33,6 +44,9 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "latest",
     "tailwindcss": "3.4.17",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "drizzle-kit": "^0.31.4",
+    "wrangler": "^4.39.0",
+    "@cloudflare/next-on-pages": "^1.13.8"
   }
 }

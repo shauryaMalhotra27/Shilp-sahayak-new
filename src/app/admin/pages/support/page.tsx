@@ -42,7 +42,7 @@ export default function AdminSupportPageEditor() {
         </div>
 
         {support.faqs.map((faq, index) => (
-          <div key={`${faq.q}-${index}`} className="border border-border rounded-lg p-3 space-y-2">
+          <div key={`support-faq-${index}`} className="border border-border rounded-lg p-3 space-y-2">
             <input
               className="w-full h-10 px-3 rounded-lg border border-border"
               value={faq.q}
@@ -84,4 +84,3 @@ export default function AdminSupportPageEditor() {
     </div>
   );
 }
-

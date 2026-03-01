@@ -31,7 +31,7 @@ export default function AdminVisionPageEditor() {
       <section className="bg-card border border-border rounded-xl p-5 space-y-3">
         <h2 className="font-semibold text-foreground">Pillars</h2>
         {vision.pillars.map((pillar, index) => (
-          <div key={`${pillar.title}-${index}`} className="border border-border rounded-lg p-3 space-y-2">
+          <div key={`vision-pillar-${index}`} className="border border-border rounded-lg p-3 space-y-2">
             <input
               className="w-full h-10 px-3 rounded-lg border border-border"
               value={pillar.title}
@@ -76,7 +76,7 @@ export default function AdminVisionPageEditor() {
           </Button>
         </div>
         {vision.roadmap.map((item, index) => (
-          <div key={`${item.phase}-${index}`} className="border border-border rounded-lg p-3 space-y-2">
+          <div key={`vision-roadmap-${index}`} className="border border-border rounded-lg p-3 space-y-2">
             <input
               className="w-full h-10 px-3 rounded-lg border border-border"
               value={item.phase}
@@ -134,4 +134,3 @@ export default function AdminVisionPageEditor() {
     </div>
   );
 }
-

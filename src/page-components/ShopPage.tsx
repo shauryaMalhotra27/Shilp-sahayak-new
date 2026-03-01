@@ -2,12 +2,14 @@ import { useMemo, useState } from 'react';
 import { ProductCard } from '../components/shared/ProductCard';
 import { Filter } from 'lucide-react';
 import { useAdminData } from '../hooks/useAdminData';
+import { useWorkerProducts } from '../hooks/useWorkerProducts';
 
 export function ShopPage() {
   const adminData = useAdminData();
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [statusFilter, setStatusFilter] = useState('All');
-  const products = adminData.products.catalog.map((product) => ({
+  const { products: liveProducts, isLoading } = useWorkerProducts(adminData.products.catalog);
+  const products = liveProducts.map((product) => ({
     ...product,
     category:
       product.link.includes('drone') || product.name.toLowerCase().includes('drone')
@@ -95,6 +97,9 @@ export function ShopPage() {
 
           {/* Product Grid */}
           <div className="flex-1">
+            {isLoading &&
+            <p className="text-sm text-muted-foreground mb-4">Loading latest products...</p>
+            }
             <div className="grid md:grid-cols-2 gap-6">
               {filteredProducts.map((product) =>
               <ProductCard key={product.name} {...product} />

@@ -88,3 +88,32 @@ Editable areas currently include home, products/shop, about, vision, support, co
 - For production-grade admin security and persistence, see:
   - `docs/ADMIN_SECURITY_NOTES.md`
   - `docs/BACKEND_MIGRATION_PATH.md`
+
+## Cloudflare Deployment
+
+Cloudflare stack support is scaffolded:
+
+- Frontend hosting: Cloudflare Pages
+- API: Cloudflare Workers (`src/worker.ts`)
+- Database: Cloudflare D1
+
+### Quick commands
+
+- `npm run cf:login`
+- `npm run cf:d1:create`
+- `npm run cf:d1:migrate:local`
+- `npm run cf:d1:migrate:remote`
+- `npm run cf:pages:build`
+- `npm run cf:pages:deploy`
+
+For full deployment steps and dashboard configuration:
+
+- `docs/CLOUDFLARE_PAGES_DEPLOY.md`
+
+### Free-tier awareness
+
+Keep request/query usage under free-tier limits by:
+
+- enabling client-side caching and revalidation
+- avoiding unnecessary polling
+- batching admin writes when possible
