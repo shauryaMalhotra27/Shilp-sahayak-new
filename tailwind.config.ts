@@ -5,7 +5,6 @@ const hsl = (value: string) => `hsl(${value} / <alpha-value>)`;
 
 const config: Config = {
   content: [
-    './index.html',
     './src/app/**/*.{js,ts,jsx,tsx}',
     './src/**/*.{js,ts,jsx,tsx}'
   ],
