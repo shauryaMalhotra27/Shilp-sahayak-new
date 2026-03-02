@@ -14,11 +14,12 @@ const AUTOSAVE_KEY = 'adminAutosave';
 const AdminEditorContext = createContext<AdminEditorContextType | undefined>(undefined);
 
 export function AdminEditorProvider({ children }: { children: React.ReactNode }) {
-  const [autosave, setAutosaveState] = useState<boolean>(() => {
-    if (typeof window === 'undefined') return false;
-    return window.localStorage.getItem(AUTOSAVE_KEY) === '1';
-  });
+  const [autosave, setAutosaveState] = useState<boolean>(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+
+  useEffect(() => {
+    setAutosaveState(window.localStorage.getItem(AUTOSAVE_KEY) === '1');
+  }, []);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -45,4 +46,3 @@ export function useAdminEditorContext() {
   }
   return ctx;
 }
-

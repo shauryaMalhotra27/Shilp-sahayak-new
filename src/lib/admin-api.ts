@@ -2,6 +2,7 @@ import { AdminData, EditableProduct, defaultStaticData } from './admin-data';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || '';
 const ADMIN_API_KEY = process.env.NEXT_PUBLIC_ADMIN_API_KEY || '';
+const ADMIN_API_KEY_STORAGE = 'adminApiKey';
 
 function hasApiBase() {
   return !!API_BASE;
@@ -11,7 +12,10 @@ function adminHeaders() {
   const headers: Record<string, string> = {
     'content-type': 'application/json',
   };
-  if (ADMIN_API_KEY) headers['x-admin-key'] = ADMIN_API_KEY;
+  const runtimeKey =
+    typeof window !== 'undefined' ? window.localStorage.getItem(ADMIN_API_KEY_STORAGE) || '' : '';
+  const key = runtimeKey || ADMIN_API_KEY;
+  if (key) headers['x-admin-key'] = key;
   return headers;
 }
 
@@ -77,7 +81,12 @@ export async function upsertRemoteContentSection(
   section: string,
   content: unknown
 ): Promise<{ ok: boolean; error?: string }> {
-  if (!hasApiBase()) return { ok: true };
+  if (!hasApiBase()) {
+    return {
+      ok: false,
+      error: 'Missing NEXT_PUBLIC_API_BASE_URL. Configure API base URL to persist content in database.',
+    };
+  }
   try {
     const res = await fetch(`${API_BASE}/api/content`, {
       method: 'POST',
@@ -85,8 +94,14 @@ export async function upsertRemoteContentSection(
       body: JSON.stringify({ section, content }),
     });
     if (!res.ok) {
-      const text = await res.text();
-      return { ok: false, error: text || `HTTP ${res.status}` };
+      let detail = '';
+      try {
+        const payload = (await res.json()) as { error?: string };
+        detail = payload?.error || '';
+      } catch {
+        detail = await res.text();
+      }
+      return { ok: false, error: detail || `HTTP ${res.status}` };
     }
     return { ok: true };
   } catch {

@@ -48,8 +48,7 @@ export function AnimatedCursorLayer() {
       color="20, 184, 166"
       outerAlpha={0.2}
       innerScale={0.8}
-      outerScale={2}
-      showSystemCursor
+      outerScale={1}      
       clickables={[
         'a',
         'button',

@@ -30,11 +30,17 @@ const ADMIN_PASSWORD = 'admin123';
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
 export function AdminProvider({ children }: { children: React.ReactNode }) {
-  const [adminUser, setAdminUser] = useState<AdminUser | null>(() => {
-    if (typeof window === 'undefined') return null;
+  const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
+
+  useEffect(() => {
     const saved = window.localStorage.getItem(ADMIN_STORAGE_KEY);
-    return saved ? (JSON.parse(saved) as AdminUser) : null;
-  });
+    if (!saved) return;
+    try {
+      setAdminUser(JSON.parse(saved) as AdminUser);
+    } catch {
+      window.localStorage.removeItem(ADMIN_STORAGE_KEY);
+    }
+  }, []);
 
   useEffect(() => {
     if (adminUser) {
@@ -83,4 +89,3 @@ export function useAdminContext() {
   }
   return context;
 }
-

@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 .wrangler
+.vercel
+.next
+out
 drizzle/local.db
 
 # Editor directories and files

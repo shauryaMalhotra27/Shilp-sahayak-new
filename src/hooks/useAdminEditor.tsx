@@ -43,7 +43,7 @@ export function useAdminEditor(options: UseAdminEditorOptions) {
     return () => {
       active = false;
     };
-  }, [setHasUnsavedChanges]);
+  }, [section, setHasUnsavedChanges]);
 
   useEffect(() => {
     if (!ready) return;
@@ -70,7 +70,6 @@ export function useAdminEditor(options: UseAdminEditorOptions) {
     }
     try {
       setIsSaving(true);
-      saveAdminData(payload);
       if (section !== 'products') {
         const remote = await upsertRemoteContentSection(
           section,
@@ -81,6 +80,7 @@ export function useAdminEditor(options: UseAdminEditorOptions) {
           return false;
         }
       }
+      saveAdminData(payload);
       savedSnapshotRef.current = JSON.stringify(payload);
       setHasUnsavedChanges(false);
       setSavedAt(new Date().toLocaleTimeString());

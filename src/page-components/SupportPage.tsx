@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { ChevronDown, Mail } from 'lucide-react';
-import { Button } from '../components/ui/Button';
+import { ChevronDown } from 'lucide-react';
 import { useAdminData } from '../hooks/useAdminData';
+import { ContactForm } from '../components/contact/ContactForm';
 
 export function SupportPage() {
   const adminData = useAdminData();
@@ -37,20 +37,7 @@ export function SupportPage() {
           )}
         </div>
 
-        <div className="bg-card p-8 rounded-2xl border border-border text-center">
-          <div className="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-4">
-            <Mail className="w-6 h-6" />
-          </div>
-          <h2 className="text-xl font-bold text-foreground mb-2">
-            {adminData.support.ctaTitle}
-          </h2>
-          <p className="text-muted-foreground mb-6">
-            {adminData.support.ctaSubtitle}
-          </p>
-          <a href={`mailto:${adminData.support.ctaEmail}`}>
-            <Button>{adminData.support.ctaLabel}</Button>
-          </a>
-        </div>
+        <ContactForm />
       </div>
     </div>);
 

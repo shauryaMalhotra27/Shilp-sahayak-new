@@ -11,14 +11,25 @@ export default function AdminLoginPage() {
   const { isAdmin, loginAdmin } = useAdminContext();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [adminApiKey, setAdminApiKey] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
     if (isAdmin) router.replace('/admin');
   }, [isAdmin, router]);
 
+  useEffect(() => {
+    const savedKey = window.localStorage.getItem('adminApiKey') || '';
+    setAdminApiKey(savedKey);
+  }, []);
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    if (adminApiKey.trim()) {
+      window.localStorage.setItem('adminApiKey', adminApiKey.trim());
+    } else {
+      window.localStorage.removeItem('adminApiKey');
+    }
     const result = loginAdmin(username.trim(), password);
     if (!result.ok) {
       setError(result.error ?? 'Login failed');
@@ -68,6 +79,18 @@ export default function AdminLoginPage() {
               required
             />
           </div>
+          <div>
+            <label className="block text-sm font-medium text-muted-foreground mb-1">
+              Admin API Key (for DB writes)
+            </label>
+            <input
+              value={adminApiKey}
+              onChange={(e) => setAdminApiKey(e.target.value)}
+              className="w-full h-12 px-4 rounded-xl border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              placeholder="Paste Worker ADMIN_API_KEY"
+              autoComplete="off"
+            />
+          </div>
 
           {error && <p className="text-sm text-danger">{error}</p>}
 
@@ -79,4 +102,3 @@ export default function AdminLoginPage() {
     </div>
   );
 }
-
